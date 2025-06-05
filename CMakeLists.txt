@@ -66,6 +66,8 @@ set(SRC_FILES src/tdscpp.cpp
 
 add_library(tdscpp ${SRC_FILES})
 
+add_library(tdscpp::tdscpp ALIAS tdscpp)
+
 if(WIN32)
 	add_definitions(-DNOMINMAX)
 endif()
@@ -131,6 +133,11 @@ install(TARGETS tdscpp
     LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
     PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
     PRIVATE_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+)
+
+install(EXPORT tdscpp-targets
+  NAMESPACE tdscpp::
+  DESTINATION lib/cmake/tdscpp
 )
 
 install(EXPORT tdscpp-targets DESTINATION lib/cmake/tdscpp)
