@@ -109,7 +109,7 @@ if(NOT HAS_STD_FORMAT)
 endif()
 
 if(NOT MSVC)
-	target_compile_options(tdscpp PUBLIC -Wall -Werror=cast-function-type -Wno-expansion-to-defined -Wunused-parameter -Wtype-limits -Wextra -Wconversion -fstrict-aliasing)
+	target_compile_options(tdscpp PRIVATE -Wall -Werror=cast-function-type -Wno-expansion-to-defined -Wunused-parameter -Wtype-limits -Wextra -Wconversion -fstrict-aliasing)
 endif()
 
 target_include_directories(tdscpp PUBLIC
@@ -119,10 +119,10 @@ target_include_directories(tdscpp PUBLIC
 
 if(WIN32)
     if(ONECORE)
-        target_link_libraries(tdscpp -Wl,-Bstatic -lstdc++ -Wl,-Bdynamic)
-        target_link_libraries(tdscpp gcc mingwex mingw32 gcc_eh ucrt onecore_apiset)
+        target_compile_options(tdscpp PRIVATE -Wl,-Bstatic -lstdc++ -Wl,-Bdynamic)
+        target_link_libraries(tdscpp PUBLIC gcc mingwex mingw32 gcc_eh ucrt onecore_apiset)
     else()
-        target_link_libraries(tdscpp ws2_32 secur32 crypt32)
+        target_link_libraries(tdscpp PUBLIC ws2_32 secur32 crypt32)
     endif()
 elseif(ENABLE_KRB5)
 	target_link_libraries(tdscpp PUBLIC PkgConfig::KRB5)
@@ -161,19 +161,19 @@ if(BUILD_SAMPLE)
     set(TEST_SRC_FILES src/tdscpp-test.cpp)
 
     add_executable(tdscpp-test ${TEST_SRC_FILES})
-    target_link_libraries(tdscpp-test tdscpp)
+    target_link_libraries(tdscpp-test PUBLIC tdscpp)
 
     if(NOT HAS_STD_FORMAT)
-        target_link_libraries(tdscpp-test fmt::fmt-header-only)
+        target_link_libraries(tdscpp-test INTERFACE fmt::fmt-header-only)
     endif()
 
     install(TARGETS tdscpp-test DESTINATION "${CMAKE_INSTALL_BINDIR}")
 
     add_executable(colltest src/colltest.cpp)
-    target_link_libraries(colltest tdscpp)
+    target_link_libraries(colltest PUBLIC tdscpp)
 
     if(NOT HAS_STD_FORMAT)
-        target_link_libraries(colltest fmt::fmt-header-only)
+        target_link_libraries(colltest INTERFACE fmt::fmt-header-only)
     endif()
 
     install(TARGETS colltest DESTINATION "${CMAKE_INSTALL_BINDIR}")
