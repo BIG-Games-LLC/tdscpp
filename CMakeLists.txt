@@ -74,14 +74,14 @@ if(WIN32)
 	add_definitions(-DNOMINMAX)
 endif()
 
-target_link_libraries(tdscpp nlohmann_json::nlohmann_json)
+target_link_libraries(tdscpp PUBLIC nlohmann_json::nlohmann_json)
 
 if(WITH_OPENSSL)
-    target_link_libraries(tdscpp OpenSSL::Crypto OpenSSL::SSL)
+    target_link_libraries(tdscpp PUBLIC OpenSSL::Crypto OpenSSL::SSL)
 endif()
 
 if(NOT WIN32)
-    target_link_libraries(tdscpp ICU::uc)
+    target_link_libraries(tdscpp PUBLIC ICU::uc)
 endif()
 
 target_compile_options(tdscpp PRIVATE
@@ -105,7 +105,7 @@ if(NOT MSVC)
 endif()
 
 if(NOT HAS_STD_FORMAT)
-    target_link_libraries(tdscpp fmt::fmt-header-only)
+    target_link_libraries(tdscpp INTERFACE fmt::fmt-header-only)
 endif()
 
 if(NOT MSVC)
@@ -125,7 +125,7 @@ if(WIN32)
         target_link_libraries(tdscpp ws2_32 secur32 crypt32)
     endif()
 elseif(ENABLE_KRB5)
-	target_link_libraries(tdscpp PkgConfig::KRB5)
+	target_link_libraries(tdscpp PUBLIC PkgConfig::KRB5)
 endif()
 
 install(TARGETS tdscpp
