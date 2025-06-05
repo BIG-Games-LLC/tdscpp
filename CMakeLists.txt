@@ -66,6 +66,8 @@ set(SRC_FILES src/tdscpp.cpp
 
 add_library(tdscpp ${SRC_FILES})
 
+set_property(TARGET tdscpp PROPERTY CMAKE_EXPORT_FIND_PACKAGE_NAME "tdscpp")
+
 add_library(tdscpp::tdscpp ALIAS tdscpp)
 
 if(WIN32)
